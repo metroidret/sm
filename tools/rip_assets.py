@@ -1474,8 +1474,8 @@ def rom_valid(rom_data, variant):
 
     return True
 
-def main():
-    # ...
+def main(args):
+    rom_data = args.rom_file.read()
     variant = "NTSC" if not args.pal else "PAL"
     if not rom_valid(rom_data, variant):
         expected_crc32, expected_sha256 = ROM_CHECKSUMS[variant]
@@ -1484,12 +1484,11 @@ def main():
               f"Expected CRC32: {expected_crc32:X}\n"
               "Expected SHA256:", expected_sha256,
               file=sys.stderr)
-        sys.exit(1) 
-    # ...
+        sys.exit(1)
 
     if not args.check:
         dump_rom(rom_data, args.output, args.pal)
 
 
 if __name__ == "__main__":
-    main()
+    main(make_argument_parser().parse_args())
